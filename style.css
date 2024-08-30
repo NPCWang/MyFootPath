@@ -1,0 +1,55 @@
+body, html {
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+}
+
+#container {
+    display: flex;
+    height: 90%;
+    width: 90%;
+    border: 2px solid #333;
+}
+
+#map {
+    flex: 3;
+    height: 100%;
+}
+
+#controls {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+
+button, select {
+    width: 80%;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: white;
+    border: 2px solid #333;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+label {
+    margin: 10px 0 5px 0;
+    font-size: 14px;
+}
+
+input[type="color"],
+input[type="number"] {
+    width: 80%;
+    padding: 5px;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+

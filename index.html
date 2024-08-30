@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+    <div id="container">
+        <div id="map"></div>
+        <div id="controls">
+            <label for="trackSelect">Select Track:</label>
+            <select id="trackSelect"></select>
+            <button id="newTrackButton">New Track</button>
+
+            <label for="cityName">City Name:</label>
+            <input type="text" id="cityName" placeholder="Enter city name">
+            <button id="locateCityButton">Locate City</button>
+
+
+            <label for="colorPicker">Line Color:</label>
+            <input type="color" id="colorPicker" value="#ff0000">
+            
+            <label for="lineWidth">Line Width:</label>
+            <input type="number" id="lineWidth" value="3" min="1" max="10">
+            
+            <label for="lineStyle">Line Style:</label>
+            <select id="lineStyle">
+                <option value="solid">Solid</option>
+                <option value="dashed">Dashed</option>
+                <option value="dotted">Dotted</option>
+            </select>
+
+            <button id="saveButton">Save Track</button>
+            <button id="resetButton">Reset Track</button>
+            <button id="clearAllButton">Clear All Tracks</button>
+
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
