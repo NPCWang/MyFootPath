@@ -9,34 +9,38 @@
 </head>
 <body>
     <div id="container">
+        <!-- 地图容器 -->
         <div id="map"></div>
+        
+        <!-- 控制面板 -->
         <div id="controls">
             <label for="trackSelect">Select Track:</label>
             <select id="trackSelect"></select>
             <button id="newTrackButton">New Track</button>
 
+            <div id="linestyle-controls">
+                <!-- <label for="colorPicker">Line Color:</label> -->
+                <label for="colorPicker">LineStyle:</label>
+                <input type="color" id="colorPicker" value="#ff0000">
+
+                <!-- <label for="lineWidth">Line Width:</label> -->
+                <input type="number" id="lineWidth" value="3" min="1" max="10">
+
+                <!-- <label for="lineStyle">Line Style:</label> -->
+                <select id="lineStyle">
+                    <option value="solid">Solid</option>
+                    <option value="dashed">Dashed</option>
+                    <option value="dotted">Dotted</option>
+                </select>
+            </div>
+
             <label for="cityName">City Name:</label>
             <input type="text" id="cityName" placeholder="Enter city name">
             <button id="locateCityButton">Locate City</button>
 
-
-            <label for="colorPicker">Line Color:</label>
-            <input type="color" id="colorPicker" value="#ff0000">
-            
-            <label for="lineWidth">Line Width:</label>
-            <input type="number" id="lineWidth" value="3" min="1" max="10">
-            
-            <label for="lineStyle">Line Style:</label>
-            <select id="lineStyle">
-                <option value="solid">Solid</option>
-                <option value="dashed">Dashed</option>
-                <option value="dotted">Dotted</option>
-            </select>
-
             <button id="saveButton">Save Track</button>
             <button id="resetButton">Reset Track</button>
             <button id="clearAllButton">Clear All Tracks</button>
-
         </div>
     </div>
 

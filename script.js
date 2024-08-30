@@ -1,10 +1,29 @@
-// 初始化地图
-var map = L.map('map').setView([0, 0], 2);
+// 定义不同的地图图层
 
-// 添加OpenStreetMap图层
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 18,
-}).addTo(map);
+var satelliteMap = L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+    maxZoom: 20,
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+});
+
+var streetMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap contributors'
+});
+
+// 初始化地图并设置默认图层
+var map = L.map('map', {
+    center: [51.505, -0.09],  // 你可以根据需要设置初始视角
+    zoom: 13,
+    layers: [satelliteMap]  // 默认加载街道图层
+});
+
+// 添加图层控制器，允许用户切换图层
+var baseLayers = {
+    "Satellite": satelliteMap,
+    "Street Map": streetMap
+};
+
+L.control.layers(baseLayers).addTo(map);
 
 // 选择器和输入元素
 var colorPicker = document.getElementById('colorPicker');

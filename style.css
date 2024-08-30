@@ -25,31 +25,37 @@ body, html {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    background-color: #f4f4f4;
+    justify-content: flex-start;
     padding: 20px;
+    background-color: #f4f4f4;
 }
 
-button, select {
-    width: 80%;
-    margin: 10px 0;
-    padding: 10px;
-    background-color: white;
-    border: 2px solid #333;
-    cursor: pointer;
-    font-size: 16px;
+/* 新的容器用于包含三个控件 */
+#linestyle-controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 20px;
 }
 
-label {
-    margin: 10px 0 5px 0;
-    font-size: 14px;
+/* 调整单个控件容器的宽度 */
+#linestyle-controls label, 
+#linestyle-controls input, 
+#linestyle-controls select {
+    width: 20%;
+    margin-bottom: 10px;
 }
 
+/* 控件的宽度 */
 input[type="color"],
-input[type="number"] {
-    width: 80%;
-    padding: 5px;
-    margin-bottom: 15px;
-    font-size: 14px;
+input[type="number"],
+select,
+input[type="text"],
+button {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    border: 2px solid #333;
 }
-
