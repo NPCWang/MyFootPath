@@ -71,6 +71,11 @@ function switchTrack(name) {
     currentTrack = tracks[name];
     if (currentTrack && currentTrack.getLatLngs().length > 0) {
         map.fitBounds(currentTrack.getBounds());
+        
+        // 更新当前UI控件以反映导入的样式
+        colorPicker.value = currentTrack.options.color;
+        lineWidth.value = currentTrack.options.weight;
+        lineStyle.value = currentTrack.options.dashArray ? 'dashed' : 'solid'; // 假设dotted线型也会单独处理
     } else {
         console.warn('Track is empty or not found:', name);
     }
@@ -88,12 +93,44 @@ if (savedTracks) {
 }
 
 // 保存所有轨迹到 localStorage 的函数
-function saveTracks() {
+function saveTracks(fileName) {
     var trackData = {};
     for (var name in tracks) {
-        trackData[name] = tracks[name].getLatLngs();
+        var track = tracks[name];
+        trackData[name] = {
+            latlngs: track.getLatLngs(),
+            style: {
+                color: track.options.color,
+                weight: track.options.weight,
+                dashArray: track.options.dashArray
+            }
+        };
     }
     localStorage.setItem('travelTracks', JSON.stringify(trackData));
+
+    // 扩展：保存为JSON文件
+    saveTracksAsJSON(trackData, fileName);
+}
+
+// 新增：保存为JSON文件的函数
+function saveTracksAsJSON(trackData, fileName) {
+    // 将trackData对象转换为JSON字符串
+    var jsonStr = JSON.stringify(trackData, null, 2);
+
+    // 默认扩展名为json
+    if (!fileName.endsWith('.json')) {
+        fileName += '.json';
+    }
+
+    // 创建一个隐藏的下载链接
+    var link = document.createElement('a');
+    link.href = 'data:text/json;charset=utf-8,' + encodeURIComponent(jsonStr);
+    link.download = fileName;
+
+    // 将链接添加到DOM并自动点击下载
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 }
 
 // 添加一个点击事件来记录轨迹但不保存
@@ -136,8 +173,14 @@ newTrackButton.addEventListener('click', function() {
 
 // 保存按钮点击事件
 document.getElementById('saveButton').addEventListener('click', function() {
-    saveTracks();
-    alert('Tracks saved successfully!');
+    var fileName = prompt("Enter the filename for the saved tracks:", "myfootpath_tracks");
+
+    if (fileName) {
+        saveTracks(fileName);
+        alert('Tracks saved successfully!');
+    } else {
+        alert('Saving cancelled. No filename provided.');
+    }
 });
 
 // 重置按钮点击事件
@@ -224,3 +267,61 @@ document.getElementById('locateCityButton').addEventListener('click', function()
         alert("Please enter a city name.");
     }
 });
+
+// 绑定导入按钮的点击事件
+document.getElementById('importButton').addEventListener('click', function() {
+    document.getElementById('importFile').click();
+});
+
+// 处理文件选择后的导入逻辑
+document.getElementById('importFile').addEventListener('change', function(event) {
+    var file = event.target.files[0];
+    if (file) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                var importedTracks = JSON.parse(e.target.result);
+
+                // 清空当前轨迹
+                clearAllTracks();
+
+                // 加载导入的轨迹
+                for (var name in importedTracks) {
+                    var trackInfo = importedTracks[name];
+                    var newTrack = L.polyline(trackInfo.latlngs, {
+                        color: trackInfo.style.color,
+                        weight: trackInfo.style.weight,
+                        dashArray: trackInfo.style.dashArray
+                    }).addTo(map);
+                    
+                    tracks[name] = newTrack;
+                    
+                    var option = document.createElement('option');
+                    option.value = name;
+                    option.text = name;
+                    trackSelect.add(option);
+                }
+
+                trackSelect.value = Object.keys(importedTracks)[0];
+                switchTrack(trackSelect.value);
+
+                alert('Tracks imported successfully!');
+            } catch (err) {
+                alert('Error parsing JSON file.');
+                console.error(err);
+            }
+        };
+        reader.readAsText(file);
+    }
+});
+
+// 清空所有轨迹的函数（重用现有的清除所有轨迹功能）
+function clearAllTracks() {
+    for (var name in tracks) {
+        tracks[name].remove();
+    }
+    tracks = {};
+    currentTrack = null;
+    trackSelect.innerHTML = '';
+    localStorage.removeItem('travelTracks');
+}
